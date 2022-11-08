@@ -24,10 +24,10 @@ public enum AttributeConst {
     //ログイン画面
     LOGIN_ERR("loginerror"),
 
-    //従業員管理
+  //従業員管理
     EMPLOYEE("employee"),
-    EMPLOYEES("employyes"),
-    EMP_COUNT("employyes_count"),
+    EMPLOYEES("employees"),
+    EMP_COUNT("employees_count"),
     EMP_ID("id"),
     EMP_CODE("code"),
     EMP_PASS("password"),
