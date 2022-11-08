@@ -46,13 +46,14 @@ public abstract class ActionBase {
      * @throws IOException
      */
     public abstract void process() throws ServletException, IOException;
+
     /**
      * パラメータのcommandの値に該当するメソッドを実行する
      * @throws ServletException
      * @throws IOException
      */
     protected void invoke()
-            throws ServletException, IOException{
+            throws ServletException, IOException {
 
         Method commandMethod;
         try {
@@ -64,6 +65,7 @@ public abstract class ActionBase {
             //(例: action=Employee command=show の場合 EmployeeActionクラスのshow()メソッドを実行する)
             commandMethod = this.getClass().getDeclaredMethod(command, new Class[0]);
             commandMethod.invoke(this, new Object[0]); //メソッドに渡す引数はなし
+
         } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
                 | InvocationTargetException | NullPointerException e) {
 
@@ -72,7 +74,6 @@ public abstract class ActionBase {
             //commandの値が不正で実行できない場合エラー画面を呼び出し
             forward(ForwardConst.FW_ERR_UNKNOWN);
         }
-
 
     }
 
@@ -90,6 +91,7 @@ public abstract class ActionBase {
 
         //jspファイルの呼び出し
         dispatcher.forward(request, response);
+
     }
 
     /**
@@ -99,7 +101,6 @@ public abstract class ActionBase {
      * @throws ServletException
      * @throws IOException
      */
-
     protected void redirect(ForwardConst action, ForwardConst command)
             throws ServletException, IOException {
 
@@ -241,3 +242,4 @@ public abstract class ActionBase {
     }
 
 }
+
