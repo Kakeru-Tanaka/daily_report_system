@@ -19,10 +19,10 @@ public enum AttributeConst {
     ERR("errors"),
 
     //ログイン中の従業員
-    LODIN_EMP("login_employee"),
+    LOGIN_EMP("login_employee"),
 
     //ログイン画面
-    LOGIN_ERR("loginerror"),
+    LOGIN_ERR("loginError"),
 
   //従業員管理
     EMPLOYEE("employee"),
