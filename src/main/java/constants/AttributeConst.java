@@ -4,13 +4,12 @@ package constants;
  * 画面の項目値等を定義するEnumクラス
  *
  */
-
 public enum AttributeConst {
 
     //フラッシュメッセージ
     FLUSH("flush"),
 
-    //一般画面共通
+    //一覧画面共通
     MAX_ROW("maxRow"),
     PAGE("page"),
 
@@ -24,7 +23,7 @@ public enum AttributeConst {
     //ログイン画面
     LOGIN_ERR("loginError"),
 
-  //従業員管理
+    //従業員管理
     EMPLOYEE("employee"),
     EMPLOYEES("employees"),
     EMP_COUNT("employees_count"),
@@ -60,8 +59,8 @@ public enum AttributeConst {
     }
 
     private AttributeConst(final Integer i) {
-       this.text = null;
-       this.i = i;
+        this.text = null;
+        this.i = i;
     }
 
     public String getValue() {
