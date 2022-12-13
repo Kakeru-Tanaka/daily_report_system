@@ -6,10 +6,10 @@ import java.util.List;
 import actions.views.EmployeeConverter;
 import actions.views.EmployeeView;
 import actions.views.ReportConverter;
-import actions.views.ReportValidator;
 import actions.views.ReportView;
 import constants.JpaConst;
 import models.Report;
+import models.validators.ReportValidator;
 
 /**
  * 日報テーブルの操作に関わる処理を行うクラス
