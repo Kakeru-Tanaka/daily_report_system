@@ -1,21 +1,22 @@
 package actions.views;
 
+import java.time.LocalDateTime;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import models.Employee;
 import models.Report;
 
 /**
- * いいねについて画面の入力値・出力値を扱うViewモデル
+ * リアクション情報について画面の入力値・出力地を扱うViewモデル
  *
  */
 @Getter //全てのクラスフィールドについてgetterを自動生成する(Lombok)
 @Setter //全てのクラスフィールドについてsetterを自動生成する(Lombok)
 @NoArgsConstructor //引数なしコンストラクタを自動生成する(Lombok)
 @AllArgsConstructor //全てのクラスフィールドを引数にもつ引数ありコンストラクタを自動生成する(Lombok)
-
-
 public class FavoriteView {
 
     /**
@@ -24,13 +25,23 @@ public class FavoriteView {
     private Integer id;
 
     /**
-     * いいねをした従業員のid
+     * いいねをつけた日報
      */
-    private EmployeeView employee_id;
+    private Report report;
 
     /**
-     * いいねをしたレポートのid
+     * いいねをつけた従業員
      */
-    private Report report_id;
+    private Employee employee;
+
+    /**
+     * いいねの状況
+     */
+    private Integer favoriteFlag;
+
+    /**
+     * いいねした日時
+     */
+    private LocalDateTime favoriteAt;
 
 }

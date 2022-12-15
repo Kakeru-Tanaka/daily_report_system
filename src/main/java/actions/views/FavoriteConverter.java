@@ -1,76 +1,62 @@
 package actions.views;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import constants.AttributeConst;
+import constants.JpaConst;
 import models.Favorite;
 
 /**
  * いいねデータのDTOモデル⇔Viewモデルの変換を行うクラス
  *
  */
-
 public class FavoriteConverter {
 
     /**
      * ViewモデルのインスタンスからDTOモデルのインスタンスを作成する
-     * @param fv LikeViewのインスタンス
-     * @return Likeのインスタンス
+     * @param rv FavoriteViewのインスタンス
+     * @return Favoriteのインスタンス
      */
-
-    public static Favorite toModel(FavoriteView fv) {
-
+    public static Favorite toModel(FavoriteView rv) {
         return new Favorite(
-                fv.getId(),
-                EmployeeConverter.toModel(fv.getEmployee_id()),
-                fv.getReport_id());
-
+                rv.getId(),
+                rv.getEmployee(),
+                rv.getReport(),
+                rv.getFavoriteFlag() == null
+                    ? null
+                    : rv.getFavoriteFlag() == AttributeConst.FAV_FLAG_TRUE.getIntegerValue()
+                        ? JpaConst.FAV_REP_TRUE
+                        : JpaConst.FAV_REP_FALSE,
+                rv.getFavoriteAt());
     }
 
     /**
      * DTOモデルのインスタンスからViewモデルのインスタンスを作成する
-     * @param e Likeのインスタンス
-     * @return LikeViewのインスタンス
+     * @param r Favoriteのインスタンス
+     * @return FavoriteViewのインスタンス
      */
-    public static FavoriteView toView(Favorite f) {
-
-        if(f == null) {
-            return null;
-        }
-
+    public static FavoriteView toView(Favorite r) {
         return new FavoriteView(
-                f.getId(),
-                EmployeeConverter.toView(f.getEmployee_id()),
-                f.getReport_id());
-    }
-
-    /**
-     * DTOモデルのリストからViewモデルのリストを作成する
-     * @param list DTOモデルのリスト
-     * @return Viewモデルのリスト
-     */
-    public static List<FavoriteView> toViewList(List<Favorite> list) {
-        List<FavoriteView> evs = new ArrayList<>();
-
-        for (Favorite f : list) {
-            evs.add(toView(f));
-        }
-
-        return evs;
+                r.getId(),
+                r.getReport(),
+                r.getEmployee(),
+                r.getFavoriteFlag() == null
+                    ? null
+                    : r.getFavoriteFlag() == JpaConst.FAV_REP_TRUE
+                        ? AttributeConst.FAV_FLAG_TRUE.getIntegerValue()
+                        : AttributeConst.FAV_FLAG_FALSE.getIntegerValue(),
+                r.getFavoriteAt());
     }
 
     /**
      * Viewモデルの全フィールドの内容をDTOモデルのフィールドにコピーする
-     * @param f DTOモデル(コピー先)
-     * @param fv Viewモデル(コピー元)
+     * @param r DTOモデル(コピー先)
+     * @param rv Viewモデル(コピー元)
      */
-    public static void copyViewToModel(Favorite f, FavoriteView fv) {
-        f.setId(fv.getId());
-        f.setEmployee_id(EmployeeConverter.toModel(fv.getEmployee_id()));
-        f.setReport_id(fv.getReport_id());
-
-
+    public static void copyViewToModel(Favorite r,FavoriteView rv) {
+        r.setId(rv.getId());
+        r.setReport(rv.getReport());
+        r.setEmployee(rv.getEmployee());
+        r.setFavoriteFlag(rv.getFavoriteFlag());
+        r.setFavoriteAt(rv.getFavoriteAt());
     }
-
 
 }

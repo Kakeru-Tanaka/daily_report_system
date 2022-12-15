@@ -1,10 +1,16 @@
 package models;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import constants.JpaConst;
@@ -17,7 +23,22 @@ import lombok.Setter;
  * いいねデータのDTOモデル
  *
  */
-@Table(name = JpaConst.TABLE_EMP)
+@Table(name = JpaConst.TABLE_FAV)
+@NamedQueries({
+    @NamedQuery(
+            name = JpaConst.Q_FAV_ALL_FAV_COUNT_TO_REPORT,
+            query = JpaConst.Q_FAV_ALL_FAV_COUNT_TO_REPORT_DEF),
+    @NamedQuery(
+            name = JpaConst.Q_FAV_COUNT_CREATED_MINE_FAV_DATA_TO_REPORT,
+            query = JpaConst.Q_FAV_COUNT_CREATED_MINE_FAV_DATA_TO_REPORT_DEF),
+    @NamedQuery(
+            name = JpaConst.Q_FAV_COUNT_MINE_FAV_TO_REPORT,
+            query = JpaConst.Q_FAV_COUNT_MINE_FAV_TO_REPORT_DEF),
+    @NamedQuery(
+            name = JpaConst.Q_FAV_GET_MINE_FAV_TO_REPORT,
+            query = JpaConst.Q_FAV_GET_MINE_FAV_TO_REPORT_DEF)
+})
+
 @Getter //全てのクラスフィールドについてgetterを自動生成する(Lombok)
 @Setter //全てのクラスフィールドについてsetterを自動生成する(Lombok)
 @NoArgsConstructor //引数なしコンストラクタを自動生成する(Lombok)
@@ -34,15 +55,29 @@ public class Favorite {
     private Integer id;
 
     /**
-     * いいねをした従業員のid
+     * いいねをした従業員
      */
-    @Column(name = JpaConst.FAV_COL_EMP_ID)
-    private Employee employee_id;
+    @ManyToOne
+    @JoinColumn(name = JpaConst.FAV_COL_EMP, nullable = false)
+    private Employee employee;
 
     /**
-     * いいねをしたレポートのid
+     * いいねをした日報
      */
-    @Column(name = JpaConst.FAV_COL_REP_ID)
-    private Report report_id;
+    @ManyToOne
+    @JoinColumn(name = JpaConst.FAV_COL_REP, nullable = false)
+    private Report report;
+
+    /**
+     * いいねの状況
+     */
+    @Column(name = JpaConst.FAV_COL_FLAG,nullable = false,columnDefinition = "integer default 0")
+    private Integer favoriteFlag;
+
+    /**
+     * いいね日
+     */
+    @Column(name = JpaConst.FAV_COL_AT,nullable = false)
+    private LocalDateTime favoriteAt;
 
 }

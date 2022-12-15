@@ -41,6 +41,10 @@ public enum AttributeConst {
     DEL_FLAG_TRUE(1),
     DEL_FLAG_FALSE(0),
 
+  //いいねフラグ
+    FAV_FLAG_TRUE(1),
+    FAV_FLAG_FALSE(0),
+
     //日報管理
     REPORT("report"),
     REPORTS("reports"),
@@ -51,9 +55,10 @@ public enum AttributeConst {
     REP_CONTENT("content_msg"),
 
     //いいね管理
-    FAVORITE("Favorite"),
-    FAVORITES("Favorites"),
-    FAVORITE_ID("Favorite_id");
+    FAVORITE("favorite"),
+    FAVORITES("favorites"),
+    FAV_COUNT("favoriteCount"),
+    FAV_MY_COUNT("myFavoriteCount");
 
     private final String text;
     private final Integer i;

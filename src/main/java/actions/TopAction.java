@@ -1,5 +1,6 @@
 package actions;
 
+
 import java.io.IOException;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import actions.views.ReportView;
 import constants.AttributeConst;
 import constants.ForwardConst;
 import constants.JpaConst;
+import services.FavoriteService;
 import services.ReportService;
 
 /**
@@ -19,6 +21,7 @@ import services.ReportService;
 public class TopAction extends ActionBase {
 
     private ReportService service;
+    private FavoriteService favoriteService;
 
     /**
      * indexメソッドを実行する
@@ -27,11 +30,13 @@ public class TopAction extends ActionBase {
     public void process() throws ServletException, IOException {
 
         service = new ReportService();
+        favoriteService = new FavoriteService();
 
         //メソッドを実行
         invoke();
 
         service.close();
+        favoriteService.close();
 
     }
 
@@ -40,7 +45,8 @@ public class TopAction extends ActionBase {
      */
     public void index() throws ServletException, IOException {
 
-      //セッションからログイン中の従業員情報を取得
+
+        //セッションからログイン中の従業員情報を取得
         EmployeeView loginEmployee = (EmployeeView) getSessionScope(AttributeConst.LOGIN_EMP);
 
         //ログイン中の従業員が作成した日報データを、指定されたページ数の一覧画面に表示する分取得する
@@ -50,10 +56,15 @@ public class TopAction extends ActionBase {
         //ログイン中の従業員が作成した日報データの件数を取得
         long myReportsCount = service.countAllMine(loginEmployee);
 
+        //リアクション数のリストを作成する
+        List<Long> favorites = favoriteService.getAllCountFavoriteToReport(reports);
+
+        putRequestScope(AttributeConst.TOKEN,getTokenId());
         putRequestScope(AttributeConst.REPORTS, reports); //取得した日報データ
         putRequestScope(AttributeConst.REP_COUNT, myReportsCount); //ログイン中の従業員が作成した日報の数
         putRequestScope(AttributeConst.PAGE, page); //ページ数
         putRequestScope(AttributeConst.MAX_ROW, JpaConst.ROW_PER_PAGE); //1ページに表示するレコードの数
+        putRequestScope(AttributeConst.FAVORITES,favorites);            //リアクション数のリスト
 
         //セッションにフラッシュメッセージが設定されている場合はリクエストスコープに移し替え、セッションからは削除する
         String flush = getSessionScope(AttributeConst.FLUSH);

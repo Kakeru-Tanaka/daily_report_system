@@ -1,11 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ page import="constants.AttributeConst" %>
 <%@ page import="constants.ForwardConst" %>
 
 <c:set var="actRep" value="${ForwardConst.ACT_REP.getValue()}" />
 <c:set var="commIdx" value="${ForwardConst.CMD_INDEX.getValue()}" />
 <c:set var="commEdt" value="${ForwardConst.CMD_EDIT.getValue()}" />
+<c:set var="commDoFavorite" value="${ForwardConst.CMD_DO_FAV.getValue()}" />
+<c:set var="commCanclFavorite" value="${ForwardConst.CMD_CANCL_FAV.getValue()}" />
 
 <c:import url="/WEB-INF/views/layout/app.jsp">
     <c:param name="content">
@@ -38,8 +41,10 @@
                     <td><fmt:formatDate value="${updateDay}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
                 </tr>
                 <tr>
-                    <th>コメント</th>
-                    <td><pre><c:out value="${report.content}" /></pre></td>
+                    <th>いいね👍</th>
+                    <c:if test="${favoriteCount > 0}">
+                        <td>${favoriteCount}件</td>
+                    </c:if>
                 </tr>
             </tbody>
         </table>
@@ -49,9 +54,24 @@
                 <a href="<c:url value='?action=${actRep}&command=${commEdt}&id=${report.id}' />">この日報を編集する</a>
             </p>
         </c:if>
-        <c:if test="${sessionScope.login_employee.adminFlag == AttributeConst.ROLE_ADMIN.getIntegerValue()}">
-                <a href="<c:url value='?action=${actEmp}&command=${commIdx}' />">コメントする</a>
-        </c:if>
+
+        <br>
+        <c:choose>
+            <c:when test="${myFavoriteCount != 1}">
+                <form method="POST" action="<c:url value='?action=${actRep}&command=${commDoFavorite}&id=${report.id}' />">
+                    <input type="hidden" name="${AttributeConst.TOKEN.getValue()}" value="${_token}" />
+                    <button type="submit">いいね！</button>
+                </form>
+            </c:when>
+            <c:otherwise>
+                <form method="POST" action="<c:url value='?action=${actRep}&command=${commCanclFavorite}&id=${report.id}' />">
+                    <input type="hidden" name="${AttributeConst.TOKEN.getValue()}" value="${_token}" />
+                    <button type="submit">いいね！を取り消す</button>
+                </form>
+            </c:otherwise>
+        </c:choose>
+
+        <br>
 
         <p>
             <a href="<c:url value='?action=${actRep}&command=${commIdx}' />">一覧に戻る</a>

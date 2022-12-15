@@ -27,6 +27,8 @@ public enum ForwardConst {
     CMD_EDIT("edit"),
     CMD_UPDATE("update"),
     CMD_DESTROY("destroy"),
+    CMD_DO_FAV("doFavorite"),
+    CMD_CANCL_FAV("cancelFavorite"),
 
     //jsp
     FW_ERR_UNKNOWN("error/unknown"),
@@ -40,7 +42,6 @@ public enum ForwardConst {
     FW_REP_SHOW("reports/show"),
     FW_REP_NEW("reports/new"),
     FW_REP_EDIT("reports/edit");
-
     /**
      * 文字列
      */
@@ -58,6 +59,15 @@ public enum ForwardConst {
      */
     public String getValue() {
         return this.text;
+    }
+
+    public static ForwardConst get(String key) {
+        for(ForwardConst c : values()) {
+            if(c.getValue().equals(key)){
+                return c;
+            }
+        }
+        return CMD_NONE;
     }
 
 }

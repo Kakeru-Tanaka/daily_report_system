@@ -28,6 +28,8 @@ public interface JpaConst {
     int ROLE_GENERAL = 0; //管理者権限OFF(一般)
     int EMP_DEL_TRUE = 1; //削除フラグON(削除済み)
     int EMP_DEL_FALSE = 0; //削除フラグOFF(現役)
+    int FAV_REP_TRUE = 1;  //日報のいいねフラグON
+    int FAV_REP_FALSE = 0; //日報のいいねフラグOFF
 
     //日報テーブル
     String TABLE_REP = "reports"; //テーブル名
@@ -41,20 +43,24 @@ public interface JpaConst {
     String REP_COL_UPDATED_AT = "updated_at"; //更新日時
 
     //いいね用中間テーブル
-    String TABLE_FAVORITE = "Favorites"; //テーブル名
+    String TABLE_FAV = "favorites"; //テーブル名
     //いいね中間テーブルカラム
     String FAV_COL_ID = "id"; //id
-    String FAV_COL_EMP_ID = "employee_id"; //いいねをした従業員のid
-    String FAV_COL_REP_ID = "report_id"; //いいねをしたレポートのid
+    String FAV_COL_EMP = "employee_id"; //いいねをした従業員のid
+    String FAV_COL_REP = "report_id"; //いいねをしたレポートのid
+    String FAV_COL_FLAG = "favorite_flag"; //いいねの状況
+    String FAV_COL_AT = "favorite_at"; //いいねをした日時
 
     //Entity名
     String ENTITY_EMP = "employee"; //従業員
     String ENTITY_REP = "report"; //日報
+    String ENTITY_FAV = "favorite";//いいね
 
     //JPQL内パラメータ
     String JPQL_PARM_CODE = "code"; //社員番号
     String JPQL_PARM_PASSWORD = "password"; //パスワード
     String JPQL_PARM_EMPLOYEE = "employee"; //従業員
+    String JPQL_PARM_REPORT = "report";     //日報
 
     //NamedQueryの nameとquery
     //全ての従業員をidの降順に取得する
@@ -81,5 +87,18 @@ public interface JpaConst {
     //指定した従業員が作成した日報の件数を取得する
     String Q_REP_COUNT_ALL_MINE = ENTITY_REP + ".countAllMine";
     String Q_REP_COUNT_ALL_MINE_DEF = "SELECT COUNT(r) FROM Report AS r WHERE r.employee = :" + JPQL_PARM_EMPLOYEE;
+
+  //指定した日報についたいいねの件数を取得する
+    String Q_FAV_ALL_FAV_COUNT_TO_REPORT = ENTITY_FAV + ".countAllFavoriteToReport";
+    String Q_FAV_ALL_FAV_COUNT_TO_REPORT_DEF = "SELECT COUNT(r) FROM Favorite As r WHERE r.report = :" + JPQL_PARM_REPORT + " AND r.favoriteFlag = 1";
+    //指定した日報に関する従業員のいいねデータの件数を取得する
+    String Q_FAV_COUNT_CREATED_MINE_FAV_DATA_TO_REPORT = ENTITY_FAV + ".countCreatedMineFavoriteDataToReport";
+    String Q_FAV_COUNT_CREATED_MINE_FAV_DATA_TO_REPORT_DEF = "SELECT COUNT(r) FROM Favorite As r WHERE r.report = :" + JPQL_PARM_REPORT + " AND r.employee = :" + JPQL_PARM_EMPLOYEE;
+    //指定した日報に従業員が付けたいいねの件数を取得する
+    String Q_FAV_COUNT_MINE_FAV_TO_REPORT = ENTITY_FAV + ".countMineFavoriteToReport";
+    String Q_FAV_COUNT_MINE_FAV_TO_REPORT_DEF = "SELECT COUNT(r) FROM Favorite As r WHERE r.report = :" + JPQL_PARM_REPORT + " AND r.employee = :" + JPQL_PARM_EMPLOYEE + " AND r.favoriteFlag = 1";
+    //指定した日報に従業員がつけたいいね情報を取得する
+    String Q_FAV_GET_MINE_FAV_TO_REPORT = ENTITY_FAV + ".getMineFavoriteToReport";
+    String Q_FAV_GET_MINE_FAV_TO_REPORT_DEF = "SELECT r FROM Favorite As r WHERE r.report = :" + JPQL_PARM_REPORT + " AND r.employee = :" + JPQL_PARM_EMPLOYEE;
 
 }
